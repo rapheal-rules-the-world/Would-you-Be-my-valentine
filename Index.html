@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Would You Be My Valentine 💘</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #ffe4f0, #ffd1e8);
+    font-family: 'Comic Sans MS', cursive;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .circle {
+    width: 320px;
+    height: 320px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    animation: pulse 2.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  .circle img {
+    width: 120px;
+    position: absolute;
+    top: -60px;
+  }
+
+  h2 {
+    color: #e11d48;
+    font-size: 18px;
+    margin-top: 60px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    border: none;
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 6px;
+    transition: all 0.4s ease;
+    position: relative;
+  }
+
+  #yesBtn {
+    background: #22c55e;
+    color: white;
+    z-index: 2;
+  }
+
+  #noBtn {
+    background: #ef4444;
+    color: white;
+    position: absolute;
+    z-index: 1;
+  }
+
+  /* Trademark */
+  .trademark {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #e11d48;
+    opacity: 0.6;
+    letter-spacing: 1px;
+  }
+
+  /* Fireworks */
+  .firework {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: explode 1.2s ease-out forwards;
+  }
+
+  @keyframes explode {
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(25); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4b8b6d7c2b.mp3" type="audio/mpeg">
+</audio>
+
+<div class="circle">
+  <img src="https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif">
+  <h2>Would you be my Valentine? 💖</h2>
+
+  <button id="yesBtn">Yes 💕</button>
+  <button id="noBtn">No 😒</button>
+</div>
+
+<!-- Trademark -->
+<div class="trademark">R!™</div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const music = document.getElementById("bgMusic");
+  const circle = document.querySelector(".circle");
+
+  const texts = [
+    "Are you sure? 🥺",
+    "Think about it 😭",
+    "I’ll buy you food 🍔",
+    "Pretty please 😩❤️",
+    "Last chance 😈"
+  ];
+
+  let i = 0;
+  let scale = 1;
+  let musicStarted = false;
+
+  function startMusic() {
+    if (!musicStarted) {
+      music.play().catch(() => {});
+      musicStarted = true;
+    }
+  }
+
+  function vibrateHeart() {
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 60, 100, 60, 120]);
+    }
+  }
+
+  function moveNo() {
+    startMusic();
+    vibrateHeart();
+
+    const maxX = circle.clientWidth - noBtn.offsetWidth;
+    const maxY = circle.clientHeight - noBtn.offsetHeight;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+  }
+
+  noBtn.addEventListener("mouseover", moveNo);
+  noBtn.addEventListener("touchstart", moveNo);
+
+  noBtn.addEventListener("click", () => {
+    startMusic();
+    vibrateHeart();
+
+    if (i < texts.length) {
+      noBtn.innerText = texts[i];
+      i++;
+      scale += 0.8;
+      yesBtn.style.transform = `scale(${scale})`;
+    } else {
+      yesBtn.style.transform = "scale(12)";
+      noBtn.style.display = "none";
+    }
+  });
+
+  function launchFireworks() {
+    for (let j = 0; j < 8; j++) {
+      const fw = document.createElement("div");
+      fw.className = "firework";
+      fw.style.left = Math.random() * window.innerWidth + "px";
+      fw.style.top = Math.random() * window.innerHeight + "px";
+      fw.style.background = `hsl(${Math.random()*360},100%,60%)`;
+      document.body.appendChild(fw);
+      setTimeout(() => fw.remove(), 1200);
+    }
+  }
+
+  yesBtn.addEventListener("click", () => {
+    startMusic();
+    vibrateHeart();
+    launchFireworks();
+
+    document.body.innerHTML = `
+      <div style="
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        background:#ffd6e7;
+        font-family:'Comic Sans MS';
+        text-align:center;
+      ">
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" style="width:200px;">
+        <h1 style="color:#e11d48;">SHE SAID YES 💕🥰</h1>
+        <p>Opening WhatsApp…</p>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const phone = "15482500500";
+      const msg = encodeURIComponent(
+        "I just said YES 💕🥰 Happy Valentine’s Day ❤️"
+      );
+      window.location.href = `https://wa.me/${phone}?text=${msg}`;
+    }, 1400);
+  });
+</script>
+
+</body>
+</html>
